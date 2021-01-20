@@ -18,7 +18,7 @@ Streamline your workflow and let this GitHub Action(a lite version of [CLA Assis
 #### 1. Add the following Workflow File to your repository in this path`.github/workflows/cla.yml`
 
 ```yml
-name: "CLA Assistant"
+name: "cla-bot"
 on:
   issue_comment:
     types: [created]
@@ -26,23 +26,25 @@ on:
     types: [opened,closed,synchronize]
 
 jobs:
-  CLAssistant:
+  cla-check:
     runs-on: ubuntu-latest
     steps:
-      - name: "CLA Assistant"
-        if: (github.event.comment.body == 'recheck' || github.event.comment.body == 'I have read the CLA Document and I hereby sign the CLA') || github.event_name == 'pull_request_target'
+      - name: "MLCommons CLA bot check"
+        if: (github.event.comment.body == 'recheck') || github.event_name == 'pull_request_target'
         # Alpha Release
-        uses: cla-assistant/github-action@v2.0.1-alpha
+        uses: sub-mod/github-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # the below token should have repo scope and must be manually added by you in the repository's secret
-          PERSONAL_ACCESS_TOKEN : ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          PERSONAL_ACCESS_TOKEN : ${{ secrets.MLCOMMONS_BOT_CLA_TOKEN }}
         with:
-          path-to-signatures: 'signatures/version1/cla.json'
-          path-to-document: 'https://github.com/cla-assistant/github-action/blob/master/SAPCLA.md' # e.g. a CLA or a DCO document
+          path-to-signatures: 'cla-bot/v1/cla.json'
+          path-to-document: 'https://github.com/mlcommons/systems/blob/main/mlcommons_cla.txt' # e.g. a CLA or a DCO document
           # branch should not be protected
-          branch: 'master'
+          branch: 'main'
           allowlist: user1,bot*
+          remote-organization-name: mlcommons
+          remote-repository-name: systems
 
          #below are the optional inputs - If the optional inputs are not given, then default values will be taken
           #remote-organization-name: enter the remote organization name where the signatures should be stored (Default is storing the signatures in the same repository)
