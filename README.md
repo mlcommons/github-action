@@ -16,7 +16,7 @@ Streamline your workflow and let this GitHub Action(a lite version of [CLA Assis
 #### 1. Add the following Workflow File to your repository in this path`.github/workflows/cla.yml`
 
 ```yml
-name: "mlcommons-bot"
+name: "cla-bot"
 on:
   issue_comment:
     types: [created]
@@ -27,22 +27,22 @@ jobs:
   cla-check:
     runs-on: ubuntu-latest
     steps:
-      - name: "MLCommons CLA bot"
+      - name: "MLCommons CLA bot check"
         if: (github.event.comment.body == 'recheck') || github.event_name == 'pull_request_target'
         # Alpha Release
-        uses: mlcommons/github-action@v1
+        uses: sub-mod/github-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # the below token should have repo scope and must be manually added by you in the repository's secret
-          PERSONAL_ACCESS_TOKEN : ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          PERSONAL_ACCESS_TOKEN : ${{ secrets.MLCOMMONS_BOT_CLA_TOKEN }}
         with:
-          path-to-signatures: 'signatures/version1/cla.json'
-          path-to-document: 'https://github.com/cla-assistant/github-action/blob/master/SAPCLA.md' # e.g. a CLA document
+          path-to-signatures: 'cla-bot/v1/cla.json'
+          path-to-document: 'https://github.com/mlcommons/systems/blob/main/mlcommons_cla.txt' # e.g. a CLA or a DCO document
           # branch should not be protected
           branch: 'main'
           allowlist: user1,bot*
           remote-organization-name: mlcommons
-          remote-repository-name: cla
+          remote-repository-name: systems
 
          #below are the optional inputs - If the optional inputs are not given, then default values will be taken
           #remote-organization-name: enter the remote organization name where the signatures should be stored (Default is storing the signatures in the same repository)
@@ -52,7 +52,6 @@ jobs:
           #custom-notsigned-prcomment: 'pull request comment with Introductory message to ask new contributors to sign'
           #custom-pr-sign-comment: 'The signature to be committed in order to sign the CLA'
           #custom-allsigned-prcomment: 'pull request comment when all contributors has signed, defaults to **CLA Assistant Lite bot** All Contributors have signed the CLA.'
-
 
 ```
 
