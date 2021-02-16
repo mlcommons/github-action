@@ -1,6 +1,6 @@
 
 ![build](https://github.com/cla-assistant/github-action/workflows/build/badge.svg) [![Discord](https://img.shields.io/discord/463752820026376202.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/WpJpRKm)
-# Handling CLAs and DCOs via GitHub Action (Alpha)
+# MLCommons CLA bot GitHub Action
 
 Streamline your workflow and let this GitHub Action(a lite version of [CLA Assistant](https://github.com/cla-assistant/cla-assistant)) handle the legal side of contributions to a repository for you. CLA assistant gitHub action enables contributors to sign CLAs from within a pull request. With this GitHub Action we could get rid of the need for a centrally managed database by **storing the contributor's signature data** in a decentralized way - **in the same repository's file system** or **in a remote repository**
 
@@ -8,9 +8,7 @@ Streamline your workflow and let this GitHub Action(a lite version of [CLA Assis
 1. decentralized data storage
 1. fully integrated within github environment
 1. no User Interface is required
-1. contributors can sign the CLA or DCO by just posting a Pull Request comment
 1. signatures will be stored in a file inside the repository or in a remote repository
-1. signatures can also be stored inside a private repository
 1. versioning of signatures
 
 ## Configure Contributor License Agreement within two minutes
@@ -55,21 +53,12 @@ jobs:
           #custom-pr-sign-comment: 'The signature to be committed in order to sign the CLA'
           #custom-allsigned-prcomment: 'pull request comment when all contributors has signed, defaults to **CLA Assistant Lite bot** All Contributors have signed the CLA.'
 
-
 ```
 
 #### 2. Pull Request event triggers CLA Workflow
 
 CLA action workflow will be triggered on all Pull Request `opened, synchronize, closed`. This workflow will always run in the base repository and thats why we are making use of the [pull_request_target](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request_target) event.
 <br/> When the CLA workflow is triggered on pull request `closed` event, it will lock the Pull Request conversation after the Pull Request merge so that the contributors cannot modify or delete the signatures (Pull Request comment) later. This feature is optional.
-
-#### 3. Signing the CLA
-CLA workflow creates a comment on Pull Request asking contributors who have not signed  CLA to sign and also fails the pull request status check with a `failure`. The contributors are requested to sign the CLA within the pull request by copy and pasting **"I have read the CLA Document and I hereby sign the CLA"** as a Pull Request comment like below.
-If the contributor has already signed the CLA, then the PR status will pass with `success`. <br/>
-
-<img width="685" alt="Screen Shot 2020-08-21 at 15 07 28" src="https://user-images.githubusercontent.com/33329946/90894332-b8179280-e3c0-11ea-9700-44d31a77b857.png">
-
-<br/>
 
 #### 4. Signatures stored in a JSON file
 
